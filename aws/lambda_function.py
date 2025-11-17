@@ -55,7 +55,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         }
     """
     logger.info("🚀 Iniciando Epic Games Free Scraper")
-    logger.info(f"Request ID: {context.request_id if context else 'local'}")
+    logger.info(f"Request ID: {getattr(context, 'aws_request_id', 'local') if context else 'local'}")
     
     try:
         games = get_free_games_api()
