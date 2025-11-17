@@ -42,10 +42,13 @@ The Epic Games Store API doesn't allow direct CORS requests from browsers. The L
      - No layers needed (uses only stdlib)
 
 2. **Create Function URL:**
-   - In Lambda configuration, create a Function URL
-   - Auth type: NONE (public access)
-   - CORS: Already configured in the function code
-   - Copy the generated URL (e.g., `https://abc123.lambda-url.us-east-1.on.aws/`)
+    - In Lambda configuration, create a Function URL
+    - Auth type: NONE (public access)
+    - Configure CORS:
+      - Allow origins: *
+      - Allow methods: GET, OPTIONS
+      - Allow headers: Content-Type
+    - Copy the generated URL (e.g., `https://abc123.lambda-url.us-east-1.on.aws/`)
 
 3. **Update Frontend:**
    - Open `script.js`

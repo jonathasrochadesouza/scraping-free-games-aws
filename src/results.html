@@ -41,7 +41,7 @@
                     <p class="game-price">${game.discount_price} <span class="original-price">${game.original_price}</span></p>
                     <p class="game-dates">Até ${game.end_date_formatted}</p>
                 `;
-                card.addEventListener('click', () => window.open(game.url, '_blank'));
+                card.addEventListener('click', () => window.open("https://store.epicgames.com/en-US/free-games"));
                 container.appendChild(card);
             });
         });

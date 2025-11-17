@@ -32,21 +32,21 @@ logger.setLevel(logging.INFO)
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
     Handler principal da AWS Lambda Function
-    
+
     Args:
         event: Evento Lambda (não utilizado nesta versão)
         context: Contexto Lambda com informações de runtime
-        
+
     Returns:
         Dict com statusCode, headers e body (JSON)
-        
+
     Exemplo de Resposta Sucesso:
         {
             "statusCode": 200,
             "headers": {...},
             "body": "{\"scraped_at\": \"2025-11-17T...\", \"total_games\": 2, ...}"
         }
-        
+
     Exemplo de Resposta Erro:
         {
             "statusCode": 500,
@@ -56,7 +56,20 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
     logger.info("🚀 Iniciando Epic Games Free Scraper")
     logger.info(f"Request ID: {getattr(context, 'aws_request_id', 'local') if context else 'local'}")
-    
+    logger.info(f"HTTP Method: {event.get('requestContext', {}).get('http', {}).get('method', 'UNKNOWN')}")
+
+    # Handle CORS preflight
+    if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS':
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            },
+            'body': ''
+        }
+
     try:
         games = get_free_games_api()
         

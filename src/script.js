@@ -14,12 +14,14 @@ function discoverGames() {
 
     // IMPORTANT: Replace 'YOUR_LAMBDA_URL_HERE' with your actual AWS Lambda Function URL
     // The Lambda is necessary because Epic Games API doesn't allow direct CORS requests from browsers
-    const lambdaUrl = 'YOUR_LAMBDA_URL_HERE';
+    const lambdaUrl = 'https://ngch5oeejano2aym7ggtigol6i0hzuna.lambda-url.us-east-1.on.aws/';
 
     fetch(lambdaUrl, {
         method: 'GET'
     })
     .then(response => {
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -32,7 +34,7 @@ function discoverGames() {
     })
     .catch(error => {
         console.error('Error fetching games:', error);
-        alert('Erro ao buscar jogos. Tente novamente.');
+        alert(`Erro ao buscar jogos: ${error.message}. Verifique o console para mais detalhes.`);
     });
 }
 
