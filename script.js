@@ -1,19 +1,39 @@
 function discoverGames() {
     const emailInput = document.getElementById('emailInput');
     const email = emailInput.value.trim();
-    
+
     if (email === '') {
         alert('Por favor, insira seu email!');
         return;
     }
-    
+
     if (!isValidEmail(email)) {
         alert('Por favor, insira um email válido!');
         return;
     }
-    
-    // Redireciona para a página de resultados
-    window.location.href = 'results.html';
+
+    // IMPORTANT: Replace 'YOUR_LAMBDA_URL_HERE' with your actual AWS Lambda Function URL
+    // The Lambda is necessary because Epic Games API doesn't allow direct CORS requests from browsers
+    const lambdaUrl = 'YOUR_LAMBDA_URL_HERE';
+
+    fetch(lambdaUrl, {
+        method: 'GET'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Lambda already returns processed data in the correct format
+        localStorage.setItem('gamesData', JSON.stringify(data));
+        window.location.href = 'results.html';
+    })
+    .catch(error => {
+        console.error('Error fetching games:', error);
+        alert('Erro ao buscar jogos. Tente novamente.');
+    });
 }
 
 function isValidEmail(email) {

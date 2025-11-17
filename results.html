@@ -9,53 +9,42 @@
 <body>
     <div class="container">
         <div class="content results-page">
-            <h1 class="title">Descubra<br><span class="title-main">Jogos grátis!</span></h1>
-            <p class="subtitle">Veja abaixo os jogos gratuitos</p>
+            <h1 class="title">Grátis agora, pela<br><span class="title-main">EPIC GAMES</span></h1>
+            <p class="subtitle">Veja a lista abaixo</p>
             
             <div class="results-container">
-                <div class="game-card">
-                    <div class="game-image">🎮</div>
-                    <h3>Resident Evil 4</h3>
-                    <p class="game-description">Survival horror de ação</p>
-                </div>
-                
-                <div class="game-card">
-                    <div class="game-image">🦇</div>
-                    <h3>Batman</h3>
-                    <p class="game-description">Jogo de ação e aventura</p>
-                </div>
-                
-                <div class="game-card">
-                    <div class="game-image">🕷️</div>
-                    <h3>Spider Man</h3>
-                    <p class="game-description">Aventura do Homem-Aranha</p>
-                </div>
-                
-                <div class="game-card">
-                    <div class="game-image">🎯</div>
-                    <h3>Fortnite</h3>
-                    <p class="game-description">Battle Royale gratuito</p>
-                </div>
-                
-                <div class="game-card">
-                    <div class="game-image">⚔️</div>
-                    <h3>League of Legends</h3>
-                    <p class="game-description">MOBA competitivo</p>
-                </div>
-                
-                <div class="game-card">
-                    <div class="game-image">🚗</div>
-                    <h3>Rocket League</h3>
-                    <p class="game-description">Futebol com carros</p>
-                </div>
             </div>
             
             <button class="back-button" onclick="goBack()">Voltar</button>
-            
             <p class="footer-text">Jonathas Rocha De Souza</p>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const data = JSON.parse(localStorage.getItem('gamesData'));
+            if (!data || !data.games) {
+                alert('Nenhum dado de jogos encontrado. Tente novamente.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const container = document.querySelector('.results-container');
+            data.games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <img src="${game.thumbnail}" alt="${game.title}" class="game-image" loading="lazy">
+                    <h3>${game.title}</h3>
+                    <p class="game-description">${game.description}</p>
+                    <p class="game-price">${game.discount_price} <span class="original-price">${game.original_price}</span></p>
+                    <p class="game-dates">Até ${game.end_date_formatted}</p>
+                `;
+                card.addEventListener('click', () => window.open(game.url, '_blank'));
+                container.appendChild(card);
+            });
+        });
+    </script>
 </body>
 </html>
